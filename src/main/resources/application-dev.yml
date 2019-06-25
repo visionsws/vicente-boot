@@ -1,0 +1,42 @@
+spring:
+  #数据库配置
+  datasource:
+    name: itender
+    url: jdbc:mysql://192.168.243.20:9097/user_role?useUnicode=true&useSSL=false&characterEncoding=utf-8
+    username: root
+    password: "b#12345678"
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    initialSize: 1
+    maxActive: 20
+    maxWait: 30000
+    minIdle: 1
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+    validationQuery: "SELECT 'x'"
+    testWhileIdle: true
+    testOnBorrow: true
+    testOnReturn: true
+    timeBetweenEvictionRunsMillis: 30000
+    minEvictableIdleTimeMillis: 30000
+    keepAlive: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: mysql
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: UTC
+  messages:
+    encoding: UTF-8
+    basename: message/messages_zh
+server:
+  port: 8080
+
+snowflake:
+  inst:
+    workerId: 1
+    datacenterId : 1
