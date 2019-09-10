@@ -19,7 +19,7 @@ import java.util.TimeZone;
  * @since 2018-08-09
  */
 @RestController
-@RequestMapping(value = "/test")
+@RequestMapping(value = "/user")
 public class UserController {
 
     @Autowired
