@@ -19,7 +19,7 @@ import java.util.Set;
 public class CustomRealm extends AuthorizingRealm {
     Map<String,String> userMap = new HashMap<>();
     {
-        userMap.put("admin","172eee54aa664e9dd0536b063796e54e");
+        userMap.put("admin","66c498141d591d8090f5965273910001");
         super.setName("customRealm");
     }
 
@@ -61,7 +61,7 @@ public class CustomRealm extends AuthorizingRealm {
             return null;
         }
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo("admin",password,"customRealm");
-        authenticationInfo.setCredentialsSalt(ByteSource.Util.bytes("admin"));
+        authenticationInfo.setCredentialsSalt(ByteSource.Util.bytes("baaa"));
         return authenticationInfo;
     }
 
@@ -71,7 +71,7 @@ public class CustomRealm extends AuthorizingRealm {
     }
 
     public static void main(String[] args) {
-        Md5Hash md5Hash = new Md5Hash("admin123","admin");
+        Md5Hash md5Hash = new Md5Hash("aaa1234","baaa");
         System.out.println(md5Hash.toString());
     }
 }

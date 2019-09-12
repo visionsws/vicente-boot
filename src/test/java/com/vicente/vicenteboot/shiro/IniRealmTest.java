@@ -24,12 +24,12 @@ public class IniRealmTest {
         Subject subject = SecurityUtils.getSubject();
 
         //主体提交认证
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("Tom", "tom123");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("Admin", "admin123");
         subject.login(usernamePasswordToken);
 
         System.out.println("subject.isAuthenticated: "+subject.isAuthenticated());
-        subject.checkRole("system");
-        subject.checkPermission("user:update");
+        subject.checkRole("admin");
+        subject.checkPermission("user:delete");
 
 
 

@@ -29,13 +29,13 @@ public class CustomRealmTest {
         Subject subject = SecurityUtils.getSubject();
 
         //主体提交认证
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("admin", "admin123");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("admin", "aaa1234");
         subject.login(usernamePasswordToken);
 
         System.out.println("subject.isAuthenticated: "+subject.isAuthenticated());
 
-      /*  subject.checkRole("admin");
-        subject.checkPermissions("user:delete","user:select");*/
+        subject.checkRole("admin");
+        subject.checkPermissions("user:delete","user:select");
 
 
 

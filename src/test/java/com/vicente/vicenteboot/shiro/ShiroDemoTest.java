@@ -54,7 +54,7 @@ public class ShiroDemoTest {
 
         System.out.println("subject.isAuthenticated: "+subject.isAuthenticated());
         subject.checkRole("admin");
-        subject.checkRoles("admin","user");
+        subject.checkRoles("admin2","user");
 
     }
 
