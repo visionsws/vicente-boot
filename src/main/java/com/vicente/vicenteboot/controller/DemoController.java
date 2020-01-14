@@ -1,9 +1,10 @@
 package com.vicente.vicenteboot.controller;
 
+import com.vicente.vicenteboot.common.ResultBean;
 import com.vicente.vicenteboot.dto.DemoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,15 +23,17 @@ public class DemoController {
     private MessageSource messageSource;
 
     @RequestMapping("getMessageByKey")
-    public String getMessageByKey(@Valid @RequestBody DemoDto dto){
+    public ResultBean getMessageByKey(@Valid @RequestBody DemoDto dto){
         String key = dto.getKey();
-        String [] param = {"11111111", "222222222222"};
-        return messageSource.getMessage(key, param, Locale.CHINA);
+        String [] param = {"2019-8-8", "2019-9-9"};
+        return new ResultBean(messageSource.getMessage(key, param, Locale.CHINA));
     }
 
     @RequestMapping("test")
-    public String test(){
+    public String test(@Valid @RequestBody DemoDto dto){
         System.out.println("test....................");
-        return "zuul test.........................";
+        return "test.........................";
     }
+
+
 }

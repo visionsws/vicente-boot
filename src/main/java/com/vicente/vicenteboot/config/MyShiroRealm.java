@@ -1,27 +1,26 @@
-package com.vicente.vicenteboot.shiro;
+package com.vicente.vicenteboot.config;
 
+import com.vicente.vicenteboot.service.ReportUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-public class CustomRealm extends AuthorizingRealm {
-    Map<String,String> userMap = new HashMap<>();
-    {
-        userMap.put("admin","66c498141d591d8090f5965273910001");
-        super.setName("customRealm");
-    }
+@Slf4j
+public class MyShiroRealm extends AuthorizingRealm {
+
+    @Autowired
+    private ReportUserService reportUserService;
 
 
     @Override
@@ -51,27 +50,34 @@ public class CustomRealm extends AuthorizingRealm {
         return sets;
     }
 
+    /**
+     * 验证当前登录的Subject
+     * LoginController.login()方法中执行Subject.login()时 执行此方法
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //1、从主体传过来的认证信息中，获取用户名
         String userName = (String) authenticationToken.getPrincipal();
         //2、通过用户名到数据库中获取凭证
-        String password = getPasswordByUserName(userName);
+        String password = reportUserService.getPasswordByUserName(userName);
         if (password == null){
             return null;
         }
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo("admin",password,"customRealm");
-        authenticationInfo.setCredentialsSalt(ByteSource.Util.bytes("baaa"));
+        /**
+         * 四个参数
+         * principal：认证的实体信息，可以是username，也可以是数据库表对应的用户的实体对象
+         * credentials：数据库中的密码（经过加密的密码）
+         * credentialsSalt：盐值（使用用户名）
+         * realmName：当前realm对象的name，调用父类的getName()方法即可
+         */
+        ByteSource credentialsSalt = ByteSource.Util.bytes(userName);
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                userName,
+                password,
+                credentialsSalt,
+                getName()
+        );
         return authenticationInfo;
     }
 
-    // 模拟数据库
-    private String getPasswordByUserName(String userName) {
-       return userMap.get(userName);
-    }
-
-    public static void main(String[] args) {
-        Md5Hash md5Hash = new Md5Hash("aaa1234","baaa");
-        System.out.println(md5Hash.toString());
-    }
 }
