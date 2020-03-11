@@ -30,9 +30,9 @@ public class DemoController {
     }
 
     @RequestMapping("test")
-    public String test(@Valid @RequestBody DemoDto dto){
+    public ResultBean test(@Valid @RequestBody DemoDto dto){
         System.out.println("test....................");
-        return "test.........................";
+        return new ResultBean("test.........................");
     }
 
 

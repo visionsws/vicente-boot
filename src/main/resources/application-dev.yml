@@ -5,9 +5,9 @@ spring:
     name: vicente-boot
   #数据库配置
   datasource:
-    url: jdbc:mysql://192.168.243.20:9097/demo_test?useUnicode=true&useSSL=false&characterEncoding=utf-8
+    url: jdbc:mysql://180.76.57.29/demo_test?useUnicode=true&useSSL=false&characterEncoding=utf-8
     username: root
-    password: 'b#12345678'
+    password: 'Root123#'
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
