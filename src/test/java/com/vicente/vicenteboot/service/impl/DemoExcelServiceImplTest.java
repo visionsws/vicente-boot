@@ -3,12 +3,11 @@ package com.vicente.vicenteboot.service.impl;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
-import com.vicente.vicenteboot.easyexcel.ConverterData;
-import com.vicente.vicenteboot.easyexcel.ConverterDataListener;
-import com.vicente.vicenteboot.easyexcel.DemoEasyExcel;
-import com.vicente.vicenteboot.easyexcel.DemoExcelListener;
+import com.vicente.vicenteboot.easyexcel.*;
 import com.vicente.vicenteboot.entity.DemoExcel;
 import com.vicente.vicenteboot.service.DemoExcelService;
+import com.vicente.vicenteboot.service.DompRoleService;
+import com.vicente.vicenteboot.service.DompRoleUserRefService;
 import com.vicente.vicenteboot.util.TestFileUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +27,12 @@ public class DemoExcelServiceImplTest {
 
     @Autowired
     private DemoExcelService demoExcelService;
+
+    @Autowired
+    private DompRoleService dompRoleService;
+
+    @Autowired
+    private DompRoleUserRefService dompRoleUserRefService;
 
     @Test
     public void testSaveList() {
@@ -76,6 +81,19 @@ public class DemoExcelServiceImplTest {
                 // .registerConverter(new CustomStringStringConverter())
                 // 读取sheet
                 .sheet().doRead();
+    }
+
+
+    @Test
+    public void testReadRoleExcel() {
+        String fileName = "D://role.xlsx";
+        EasyExcel.read(fileName, DompRoleExcel.class, new DompRoleExcelListener(dompRoleService)).sheet().doRead();
+    }
+
+    @Test
+    public void testReadRoleRefExcel() {
+        String fileName = "D://role_user.xlsx";
+        EasyExcel.read(fileName, DompRoleUserExcel.class, new DompRoleUserExcelListener(dompRoleUserRefService)).sheet().doRead();
     }
 
 }
