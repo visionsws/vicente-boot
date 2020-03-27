@@ -17,4 +17,6 @@ import java.util.List;
 public interface DompRoleService extends IService<DompRole> {
 
     boolean saveRoleBatch(List<DompRoleExcel> list);
+
+    List<DompRoleExcel> selectRoleForExcel();
 }

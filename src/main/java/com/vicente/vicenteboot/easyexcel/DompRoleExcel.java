@@ -14,28 +14,28 @@ import lombok.Data;
 @Data
 public class DompRoleExcel  {
 
-    @ExcelProperty(index = 0)
+    @ExcelProperty(value = {"角色", "角色ID"})
     private Long roleId;
 
-    @ExcelProperty(index = 1)
+    @ExcelProperty(value = {"角色", "角色编号"})
     private Long rid;
 
-    @ExcelProperty(index = 2)
+    @ExcelProperty(value = {"角色", "角色名称"})
     private String roleName;
 
-    @ExcelProperty(index = 3)
+    @ExcelProperty(value = {"角色", "角色状态"})
     private String status;
 
-    @ExcelProperty(index = 4)
+    @ExcelProperty(value = {"角色", "角色描述"})
     private String roleDes;
 
-    @ExcelProperty(index = 5)
+    @ExcelProperty(value = "创建时间")
     private String createDate;
 
-    @ExcelProperty(index = 6)
+    @ExcelProperty(value = "修改时间")
     private String updateDate;
 
-    @ExcelProperty(index = 7)
+    @ExcelProperty(value = "修改人")
     private String modifyUser;
 
 

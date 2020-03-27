@@ -2,9 +2,12 @@ package com.vicente.vicenteboot.service.impl;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.vicente.vicenteboot.easyexcel.*;
 import com.vicente.vicenteboot.entity.DemoExcel;
+import com.vicente.vicenteboot.entity.DompRole;
 import com.vicente.vicenteboot.service.DemoExcelService;
 import com.vicente.vicenteboot.service.DompRoleService;
 import com.vicente.vicenteboot.service.DompRoleUserRefService;
@@ -19,7 +22,9 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -94,6 +99,49 @@ public class DemoExcelServiceImplTest {
     public void testReadRoleRefExcel() {
         String fileName = "D://role_user.xlsx";
         EasyExcel.read(fileName, DompRoleUserExcel.class, new DompRoleUserExcelListener(dompRoleUserRefService)).sheet().doRead();
+    }
+
+
+    @Test
+    public void testWriteRoleExcel() {
+        List<DompRoleExcel> list = dompRoleService.selectRoleForExcel();
+        System.out.println(list.size());
+        // 写法1
+        String fileName =  "D://simpleWrite" + System.currentTimeMillis() + ".xlsx";
+        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        // 如果这里想使用03 则 传入excelType参数即可
+        EasyExcel.write(fileName, DompRoleExcel.class).sheet("模板").doWrite(list);
+
+        // 写法2
+        fileName = "D://simpleWrite" + System.currentTimeMillis() + ".xlsx";
+        // 这里 需要指定写用哪个class去写
+        ExcelWriter excelWriter = EasyExcel.write(fileName, DompRoleExcel.class).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet("模板").build();
+        excelWriter.write(list, writeSheet);
+        /// 千万别忘记finish 会帮忙关闭流
+        excelWriter.finish();
+    }
+
+    /**
+     * 最简单的填充
+     *
+     * @since 2.1.1
+     */
+    @Test
+    public void testSimpleFill() {
+        // 模板注意 用{} 来表示你要用的变量 如果本来就有"{","}" 特殊字符 用"\{","\}"代替
+        String templateFileName = "D://simple.xlsx";
+        // 方案2 根据Map填充
+        String fileName = "D://simpleFill" + System.currentTimeMillis() + ".xlsx";
+        // 这里 会填充到第一个sheet， 然后文件流会自动关闭
+        List<Map<String, Object>> list = new ArrayList();
+        for (int i=0;i<10;i++){
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", "张三"+i);
+            map.put("number", 5.2+i);
+            list.add(map);
+        }
+        EasyExcel.write(fileName).withTemplate(templateFileName).sheet().doFill(list);
     }
 
 }
