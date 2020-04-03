@@ -1,3 +1,12 @@
 spring:
   profiles:
     active: dev
+# "*" 代表暴露所有的端点 如果指定多个端点，用","分开
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
